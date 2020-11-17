@@ -48,7 +48,9 @@ exports.signup = async (req, res) => {
     name: req.body.name,
     email: req.body.email,
     username: req.body.username,
-    profilePhoto: req.body.profilePhoto ? req.body.profilePhoto : "",
+    profilePhoto: req.body.profilePhoto
+      ? req.body.profilePhoto
+      : "https://raw.githubusercontent.com/saurabh-619/project-tracker/a2f9dc97941f26ce9d76ed7c149f45237fac2d88/resources/noProfile.svg",
     githubLink: req.body.githubLink,
     institution: req.body.institution,
     rooms: [],

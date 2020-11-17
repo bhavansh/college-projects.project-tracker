@@ -27,7 +27,7 @@ exports.auth = async (req, res, next) => {
       req.loggedInUser = user;
     }
   } catch (e) {
-    if (e.message === "jwt expired") {
+    if (e.message === "jwt expired" || e.message === "invalid signature") {
       return res.status(403).json({
         error: "Session expired, Sign in again.",
       });
