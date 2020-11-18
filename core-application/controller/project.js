@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const { getErrors } = require("../helper/commonFunc");
 
 // Create a project with with given required info
+// Create a project with with given required info
 exports.createProject = async (req, res) => {
   const userId = req.loggedInUser._id;
 
@@ -13,7 +14,6 @@ exports.createProject = async (req, res) => {
   }
 
   try {
-
     const foundProject = await User.findOne({ name: req.body.name });
     if (foundProject) {
       return res.status(400).json({
@@ -55,7 +55,7 @@ exports.createProject = async (req, res) => {
     }
 
     //   Update the user
-    await user.adminRooms.push(newProject._id)
+    await user.adminRooms.push(newProject._id);
 
     res.status(200).json({
       msg: `${newProject.name} with UserId ${newProject.admin} has successfully Created a Project with Id ${newProject.id}.`,
@@ -69,7 +69,6 @@ exports.createProject = async (req, res) => {
 
 // Join project with given project id and userId
 exports.joinProject = async (req, res) => {
-
   const errorsArray = getErrors(req);
   if (errorsArray && errorsArray.length !== 0) {
     return res.status(400).json(errorsArray);
@@ -78,45 +77,46 @@ exports.joinProject = async (req, res) => {
   const userId = req.loggedInUser._id;
   const projectId = req.params.projectId;
 
+  const errorsArray = getErrors(req);
+  if (errorsArray && errorsArray.length !== 0) {
+    return res.status(400).json(errorsArray);
+  }
+
   try {
-  const project = await Project.findById(projectId)
+    const project = await Project.findById(projectId);
 
+    if (!project) {
+      return res.status(404).json({
+        error: "Project requested couldn't found.",
+      });
+    }
 
+    const user = await User.findById(userId);
 
-  if (!project) {
-    return res.status(404).json({
-      error: "Project requested couldn't found.",
+    if (!user) {
+      return res.status(404).json({
+        error: "User doesnt exist.",
+      });
+    }
+
+    await user.rooms.push(projectId);
+    await project.members.push(userId);
+
+    res.status(200).json({
+      msg: `${user.name} with UserId ${userId} has successfully Joined a Project with Id ${projectId}.`,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      error: e.message,
     });
   }
-
-  const user = await User.findById(userId);
-
-  if (!user) {
-    return res.status(404).json({
-      error: "User doesnt exist.",
-    });
-  }
-
-  await user.rooms.push(projectId)
-  await project.members.push(userId)
-
-  res.status(200).json({
-    msg: `${user.name} with UserId ${userId} has successfully Joined a Project with Id ${projectId}.`,
-  });
-} catch (e) {
-  return res.status(500).json({
-    error: e.message,
-  });
-}
-
-
 };
 
 // Get a project with given projectId
 exports.getAProjectWithId = async (req, res) => {
-  const projectId = req.params.c;
-  try{
-    const project = await Project.findById(projectId)
+  const projectId = req.params.projectId;
+  try {
+    const project = await Project.findById(projectId);
 
     if (!project) {
       return res.status(404).json({
@@ -139,8 +139,7 @@ exports.getAllProjectForAUser = async (req, res) => {
   const userId = req.loggedInUser._id;
   const sortBy = req.query.sortBy ? req.query.sortBy : "desc";
 
-  try{
-
+  try {
     const user = await User.findById(userId);
 
     //   Check if user exists
@@ -150,7 +149,9 @@ exports.getAllProjectForAUser = async (req, res) => {
       });
     }
 
-    const allprojectsforuser = await Project.find({ "members.memberId": UserId}).sort([["createdAt", sortBy]]);
+    const allprojectsforuser = await Project.find({
+      "members.memberId": UserId,
+    }).sort([["createdAt", sortBy]]);
 
     if (allprojectsforuser.length === 0) {
       return res.status(404).json({
