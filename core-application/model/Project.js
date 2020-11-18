@@ -64,6 +64,9 @@ const projectSchema = new mongoose.Schema(
           type: ObjectId,
           ref: "User",
         },
+        joinedAt: {
+          type: String,
+        },
       },
     ],
     bannedMembers: [
@@ -71,6 +74,9 @@ const projectSchema = new mongoose.Schema(
         memberId: {
           type: ObjectId,
           ref: "User",
+        },
+        joinedAt: {
+          type: String,
         },
       },
     ],

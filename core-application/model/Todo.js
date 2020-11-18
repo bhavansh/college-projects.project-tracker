@@ -17,7 +17,7 @@ const taskSchema = new mongoose.Schema(
     },
     status: {
       type: Number,
-      enum: [0, 1, 2],
+      enum: [0, 1, 2], // 0 = added, 1= in process, 2 = complete
       default: 0,
     },
     deadline: {

@@ -29,7 +29,7 @@ exports.signin = async (req, res) => {
     };
 
     const token = await jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: 43200,
+      expiresIn: 43200000,
     });
 
     res.status(200).json({
@@ -53,9 +53,9 @@ exports.signup = async (req, res) => {
       : "https://raw.githubusercontent.com/saurabh-619/project-tracker/a2f9dc97941f26ce9d76ed7c149f45237fac2d88/resources/noProfile.svg",
     githubLink: req.body.githubLink,
     institution: req.body.institution,
-    rooms: [],
-    adminRooms: [],
-    bannedRooms: [],
+    projects: [],
+    adminProjects: [],
+    bannedProjects: [],
   });
 
   try {
@@ -87,7 +87,7 @@ exports.signup = async (req, res) => {
       userId: user._id,
     };
     const token = await jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: 43200,
+      expiresIn: 43200000,
     });
     res.status(200).json({
       msg: `${newUser.name} signed up succefully.`,
