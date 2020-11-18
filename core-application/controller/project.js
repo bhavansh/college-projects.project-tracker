@@ -11,7 +11,16 @@ exports.createProject = async (req, res) => {
   if (errorsArray && errorsArray.length !== 0) {
     return res.status(400).json(errorsArray);
   }
+
   try {
+
+    const foundProject = await User.findOne({ name: req.body.name });
+    if (foundProject) {
+      return res.status(400).json({
+        error: "Project Name already exists, Try With another name",
+      });
+    }
+
     const newProject = new Project({
       _id: new mongoose.Types.ObjectId(),
       admin: userId,
@@ -60,11 +69,19 @@ exports.createProject = async (req, res) => {
 
 // Join project with given project id and userId
 exports.joinProject = async (req, res) => {
+
+  const errorsArray = getErrors(req);
+  if (errorsArray && errorsArray.length !== 0) {
+    return res.status(400).json(errorsArray);
+  }
+
   const userId = req.loggedInUser._id;
   const projectId = req.params.projectId;
 
   try {
   const project = await Project.findById(projectId)
+
+
 
   if (!project) {
     return res.status(404).json({
