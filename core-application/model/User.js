@@ -26,27 +26,36 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    rooms: [
+    projects: [
       {
-        roomId: {
+        projectId: {
           type: ObjectId,
           ref: "Project",
         },
-      },
-    ],
-    adminRooms: [
-      {
-        roomId: {
-          type: ObjectId,
-          ref: "Project",
+        joinedAt: {
+          type: String,
         },
       },
     ],
-    bannedRooms: [
+    adminProjects: [
       {
-        roomId: {
+        projectId: {
           type: ObjectId,
           ref: "Project",
+        },
+        joinedAt: {
+          type: String,
+        },
+      },
+    ],
+    bannedProjects: [
+      {
+        projectId: {
+          type: ObjectId,
+          ref: "Project",
+        },
+        joinedAt: {
+          type: String,
         },
       },
     ],
