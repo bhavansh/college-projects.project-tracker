@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { ObjectId } = require("mongoose").Schema.Types;
 
-const taskSchema = new mongoose.Schema(
+const todoSchema = new mongoose.Schema(
   {
     project: {
       type: ObjectId,
@@ -22,7 +22,6 @@ const taskSchema = new mongoose.Schema(
     },
     deadline: {
       type: String,
-      required: true,
     },
     isBackloged: {
       type: Boolean,
@@ -46,4 +45,4 @@ const taskSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Task", taskSchema);
+module.exports = mongoose.model("Todo", todoSchema);

@@ -374,10 +374,39 @@ exports.togglebanUserFromProject = async (req, res) => {
   }
 };
 
+// Get all project members
+exports.getAllProjectMembers = async (req, res) => {
+  const projectId = req.params.projectId;
+  try {
+    // Find project and user
+    const project = await Project.findById(projectId).populate(
+      "members.memberId",
+      "-projects -adminProjects -bannedProjects"
+    );
+
+    if (!project) {
+      return res.status(404).json({
+        error: `Requested project is unavailable.`,
+      });
+    }
+
+    const members = project.members.sort(
+      (memberA, memberB) => memberB.joinedAt - memberA.joinedAt
+    );
+
+    res.status(200).json({
+      members,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      error: e.message,
+    });
+  }
+};
+
 // Get all banned users for a projects with projectId
 exports.getAllBannedUsersOfProject = async (req, res) => {
   const projectId = req.params.projectId;
-  const sortBy = req.query.sortBy ? req.query.sortBy : "desc";
 
   try {
     // Find project and user

@@ -11,6 +11,7 @@ const {
   togglebanUserFromProject,
   deleteProject,
   checkIfAdmin,
+  getAllProjectMembers,
 } = require("../controller/project");
 
 router.post(
@@ -31,19 +32,17 @@ router.put(
   "/:projectId",
   auth,
   check("name", "Project name is required.").notEmpty(),
-  check("companyName", "CompanyName name is required.").notEmpty(),
-  check("description", "Description name is required.").notEmpty(),
-  check(
-    "concept",
-    "Concept name is required. (end-to-end encryption)"
-  ).notEmpty(),
-  check("institution", "Institution name is required.").notEmpty(),
-  check("deadline", "Tentetive deadline of project is required.").notEmpty(),
+  check("companyName", "Company name is required.").notEmpty(),
+  check("description", "Description is required.").notEmpty(),
+  check("concept", "Concept is required. (end-to-end encryption)").notEmpty(),
+  check("institution", "Institution is required.").notEmpty(),
+  check("deadline", "Tentative deadline of project is required.").notEmpty(),
   updateProjectInfo
 );
 
 router.post("/join/:projectId", auth, joinProject);
 router.get("/all", auth, getAllProjectForAUser);
+router.get("/all/members/:projectId", auth, getAllProjectMembers);
 router.get("/:projectId", auth, getAProjectWithId);
 router.get("/banned-user/:projectId", auth, getAllBannedUsersOfProject);
 router.get("/check-admin/:projectId", auth, checkIfAdmin);
