@@ -10,15 +10,30 @@ const {
   deleteTodo,
   changeIsBackloged,
   getAllBacklogedTodosForAProject,
+  addAssignedMembers,
 } = require("../controller/todo");
 
-router.post("/create/:projectId", auth, createTodo);
-router.get("/all/:projectId", auth, getAllTodosForAProject);
+router.post(
+  "/create/:projectId",
+  auth,
+  check("heading", "Project heading is required.").notEmpty(),
+  check("description", "Description is required.").notEmpty(),
+  createTodo
+);
 router.get("/:todoId", auth, getATodoWithId);
-router.get("/check-backlog/:todoId", auth, changeIsBackloged);
-router.get("/all-backlog/:todoId", auth, getAllBacklogedTodosForAProject);
-router.put("/status/:projectId", auth, changeStatusOfTodo);
-router.put("/:todoId", auth, updateTodoInfo);
+router.get("/all/:projectId", auth, getAllTodosForAProject);
+router.get("/all-backlog/:projectId", auth, getAllBacklogedTodosForAProject);
+router.put(
+  "/:todoId",
+  auth,
+  check("heading", "Project heading is required.").notEmpty(),
+  check("description", "Description is required.").notEmpty(),
+  updateTodoInfo
+);
+router.put("/change-status/:todoId", auth, changeStatusOfTodo);
+router.put("/assign/:todoId/:userId", auth, addAssignedMembers);
+router.put("/change-backlog/:todoId", auth, changeIsBackloged);
+
 router.delete("/:todoId", auth, deleteTodo);
 
 module.exports = router;
