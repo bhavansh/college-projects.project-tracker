@@ -18,6 +18,9 @@ router.post(
   auth,
   check("heading", "Project heading is required.").notEmpty(),
   check("description", "Description is required.").notEmpty(),
+  check("tags", "Add atleast one tag.").notEmpty(),
+  check("assignedMembers", "Assigned task to members.").notEmpty(),
+  check("deadline", "Tentative deadline is required.").notEmpty(),
   createTodo
 );
 router.get("/:todoId", auth, getATodoWithId);

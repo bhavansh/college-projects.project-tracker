@@ -33,7 +33,6 @@ const projectSchema = new mongoose.Schema(
     },
     institution: {
       type: String,
-      required: true,
     },
     totalTasks: {
       type: Number,

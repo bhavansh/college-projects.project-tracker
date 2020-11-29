@@ -12,11 +12,6 @@ app.use(cors());
 app.use(express.json({ extended: true }));
 
 const { auth: authMiddleWare } = require("./helper/auhMiddleware");
-app.get("/api/v1/", authMiddleWare, (req, res) => {
-  res.status(200).json({
-    msg: "Hello from Project Tracker.",
-  });
-});
 
 // Import Routes
 const auth = require("./routes/auth");

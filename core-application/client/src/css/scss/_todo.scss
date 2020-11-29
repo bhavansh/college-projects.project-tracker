@@ -1,0 +1,326 @@
+#todo-feature {
+  height: 100vh;
+
+  & .todo-kanban {
+    height: auto;
+    padding: 1rem 2.5rem 1rem;
+
+    & .header {
+      display: flex;
+      justify-content: space-between;
+
+      & .right {
+        & .add-todo-btn {
+        }
+      }
+    }
+
+    & .middle-section {
+      margin-top: 2rem;
+
+      & .all-tasks-wrapper {
+        margin-top: 0rem;
+        height: 71vh;
+        width: 100%;
+        display: flex;
+        flex-grow: 1.5;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1rem;
+
+        & div {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          height: 100%;
+          width: 350px;
+          & h1 {
+            font-size: 0.7rem;
+          }
+          &.tasks-container {
+            margin-right: 2rem;
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            @include getScrollBar();
+            background-color: $chat-bg-color;
+            padding: 0rem 1.1rem 1rem;
+            &:last-child {
+              margin-right: 0rem;
+            }
+
+            & .todo {
+              background-color: #fff;
+              height: 33%;
+              width: 100% !important;
+              margin: 1.5rem 0 0rem;
+              box-shadow: 0px 1px 10px 1px rgba($color: #000000, $alpha: 0.05);
+              padding: 0.8rem 1rem;
+
+              & .header {
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                & h1 {
+                  font-size: 0.9rem !important;
+                }
+              }
+              & .middle {
+                width: 100%;
+                flex-wrap: wrap;
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: flex-start;
+
+                & .tags {
+                  display: flex;
+                  flex-wrap: wrap;
+                  flex-direction: row;
+                  align-items: flex-start;
+                  justify-content: flex-start;
+                  & .tag {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    height: 22px;
+                    width: auto;
+                    margin-right: 0.3rem;
+                    margin-top: 0;
+
+                    & h1 {
+                      font-size: 0.6rem;
+                    }
+
+                    &-0 {
+                      background-color: rgba(
+                        $color: $dark-blue-color,
+                        $alpha: 0.15
+                      );
+                      & h1 {
+                        color: $dark-blue-color;
+                      }
+                    }
+                    &-1 {
+                      background-color: rgba(
+                        $color: $dark-red-color,
+                        $alpha: 0.15
+                      );
+                      & h1 {
+                        color: $dark-red-color;
+                      }
+                    }
+                    &-2 {
+                      background-color: rgba(
+                        $color: $dark-green-color,
+                        $alpha: 0.15
+                      );
+                      & h1 {
+                        color: $dark-green-color;
+                      }
+                    }
+                  }
+                }
+              }
+
+              & .assignees {
+                width: 100%;
+
+                & .extra-member {
+                  height: 28px;
+                  width: 28px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+                & .member {
+                  width: 100%;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  align-items: center;
+
+                  & .left,
+                  & .right {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                  }
+
+                  & .right {
+                    justify-content: flex-end;
+                  }
+                  & img {
+                    height: 28px;
+                    width: 28px;
+                  }
+                }
+              }
+
+              & .footer {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                & .left {
+                  width: 45%;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-start;
+                  align-items: center;
+                  & i {
+                    font-size: 0.8rem;
+                  }
+                  & span {
+                    font-size: 0.6rem;
+                  }
+                }
+
+                & .right {
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-start;
+                  align-items: center;
+                  & i {
+                    font-size: 0.8rem;
+                    color: rgba($color: red, $alpha: 0.6);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.Modal {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  background-color: $chat-bg-color;
+  min-height: 60vh;
+  width: 40vw;
+  margin: auto;
+  transition: all 1s ease;
+  &:focus {
+    outline: none;
+  }
+  border-radius: 10px;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color: #000000, $alpha: 0.3);
+  & .modal {
+    & .modal-header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    & .modal-content {
+      margin-top: 2rem;
+      width: 100%;
+
+      & .info-section {
+        & .info-wrapper {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+
+      & .members {
+        & img {
+          height: 35px;
+          width: 35px;
+        }
+      }
+      & .tags {
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        & .tag {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          height: 22px;
+          width: auto;
+          margin-right: 0.3rem;
+          margin-top: 0;
+
+          & h1 {
+            font-size: 0.8rem;
+          }
+
+          &-0 {
+            background-color: rgba($color: $dark-blue-color, $alpha: 0.15);
+            & h1 {
+              color: $dark-blue-color;
+            }
+          }
+          &-1 {
+            background-color: rgba($color: $dark-red-color, $alpha: 0.15);
+            & h1 {
+              color: $dark-red-color;
+            }
+          }
+          &-2 {
+            background-color: rgba($color: $dark-green-color, $alpha: 0.15);
+            & h1 {
+              color: $dark-green-color;
+            }
+          }
+          &-3 {
+            background-color: rgba($color: #3ec1d3, $alpha: 0.15);
+            & h1 {
+              color: #3ec1d3;
+            }
+          }
+          &-4 {
+            background-color: rgba($color: #2d4059, $alpha: 0.15);
+            & h1 {
+              color: #2d4059;
+            }
+          }
+          &-5 {
+            background-color: rgba($color: #ff9a3c, $alpha: 0.15);
+            & h1 {
+              color: #ff9a3c;
+            }
+          }
+          &-6 {
+            background-color: rgba($color: #8d6262, $alpha: 0.15);
+            & h1 {
+              color: #8d6262;
+            }
+          }
+          &-7 {
+            background-color: rgba($color: #ff99fe, $alpha: 0.15);
+            & h1 {
+              color: #ff99fe;
+            }
+          }
+        }
+      }
+    }
+  }
+}

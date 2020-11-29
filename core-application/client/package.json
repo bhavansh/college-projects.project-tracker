@@ -6,16 +6,43 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "autoprefixer": "^10.0.2",
+    "axios": "^0.21.0",
+    "emoji-mart": "^3.0.0",
+    "firebase": "^8.1.1",
+    "fuse.js": "^6.4.3",
+    "jwt-decode": "^3.1.2",
+    "mime-types": "^2.1.27",
+    "moment": "^2.29.1",
+    "postcss": "^8.1.8",
+    "rc-time-picker": "^3.7.3",
     "react": "^17.0.1",
+    "react-day-picker": "^7.4.8",
+    "react-detect-offline": "^2.4.0",
     "react-dom": "^17.0.1",
+    "react-firebase-hooks": "^2.2.0",
+    "react-google-login": "^5.1.23",
+    "react-modal": "^3.12.1",
+    "react-query": "^2.26.2",
+    "react-query-devtools": "^2.6.3",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-spinners": "^0.9.0",
+    "react-toastify": "^6.1.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "tailwindcss": "^2.0.1",
+    "uuid": "^8.3.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-css": "npx tailwindcss build ./src/css/tailwind.css -o ./src/css/main.css"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +61,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:8000"
 }
