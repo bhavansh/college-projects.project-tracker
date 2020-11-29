@@ -53,7 +53,10 @@ exports.createTodo = async (req, res) => {
 exports.getATodoWithId = async (req, res) => {
   const todoId = req.params.todoId;
   try {
-    const todo = await Todo.findById(todoId);
+    const todo = await Todo.findById(todoId).populate(
+      "assignedMembers.memberId",
+      "name"
+    );
 
     if (!todo) {
       return res.status(404).json({
@@ -74,7 +77,7 @@ exports.getATodoWithId = async (req, res) => {
 // Get all todos for a project with projectId
 exports.getAllTodosForAProject = async (req, res) => {
   const projectId = req.params.projectId;
-  const sortBy = req.query.sortBy ? req.query.sortBy : "desc";
+  const sortBy = req.query.sortBy ? req.query.sortBy : "asc";
 
   try {
     const project = await Project.findById(projectId);
@@ -87,16 +90,38 @@ exports.getAllTodosForAProject = async (req, res) => {
     }
     const alltodosforproject = await Todo.find({
       project: projectId,
-    }).sort([["createdAt", sortBy]]);
+    })
+      .populate("creator", "profilePhoto name")
+      .populate("assignedMembers.memberId", "profilePhoto name")
+      .sort([["createdAt", sortBy]]);
 
-    if (alltodosforproject.length === 0) {
-      return res.status(404).json({
-        error: "Project has no Todo.",
+    if (alltodosforproject.length !== 0) {
+      const justAddedTodos = alltodosforproject.filter(
+        (todo) => todo.status === 0 && todo.deadline > new Date().toISOString()
+      );
+      const inProgressTodos = alltodosforproject.filter(
+        (todo) => todo.status === 1 && todo.deadline > new Date().toISOString()
+      );
+      const completedTodos = alltodosforproject.filter(
+        (todo) => todo.status === 2
+      );
+      const backlogedTodos = alltodosforproject.filter(
+        (todo) => todo.deadline < new Date().toISOString() && todo.status !== 2
+      );
+      return res.status(200).json({
+        allTodos: alltodosforproject,
+        justAddedTodos,
+        inProgressTodos,
+        completedTodos,
+        backlogedTodos,
       });
     }
-
     res.status(200).json({
-      todos: alltodosforproject,
+      allTodos: alltodosforproject,
+      justAddedTodos: [],
+      inProgressTodos: [],
+      completedTodos: [],
+      backlogedTodos: [],
     });
   } catch (e) {
     return res.status(500).json({
@@ -120,12 +145,13 @@ exports.updateTodoInfo = async (req, res) => {
     heading: req.body.heading,
     description: req.body.description,
     tags: req.body.tags,
+    status: req.body.status,
     deadline: req.body.deadline,
+    assignedMembers: req.body.assignedMembers,
   });
 
   try {
     const todo = await Todo.findById(todoId).populate("project", "admin");
-
     // Check if user is creator of Todo.
     if (
       userId.toString() !== todo.creator.toString() &&
@@ -152,7 +178,9 @@ exports.updateTodoInfo = async (req, res) => {
         heading: newTodo.heading,
         description: newTodo.description,
         tags: newTodo.tags,
+        status: newTodo.status,
         deadline: newTodo.deadline,
+        assignedMembers: newTodo.assignedMembers,
       },
     });
 
@@ -305,7 +333,7 @@ exports.addAssignedMembers = async (req, res) => {
 // Get all banned users for a projects with projectId
 exports.getAllBacklogedTodosForAProject = async (req, res) => {
   const projectId = req.params.projectId;
-  const sortBy = req.query.sortBy ? req.query.sortBy : "desc";
+  const sortBy = req.query.sortBy ? req.query.sortBy : "asc";
 
   try {
     const project = await Project.findById(projectId);
@@ -322,11 +350,6 @@ exports.getAllBacklogedTodosForAProject = async (req, res) => {
       isBackloged: true,
     }).sort([["createdAt", sortBy]]);
 
-    if (allBacklogedtodosForProject.length === 0) {
-      return res.status(404).json({
-        error: "There are no backloged todos for a given project.",
-      });
-    }
     res.status(200).json({
       todos: allBacklogedtodosForProject,
     });

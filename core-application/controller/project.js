@@ -34,7 +34,7 @@ exports.createProject = async (req, res) => {
       completedTasks: 0,
       backlogs: 0,
       deadline: req.body.deadline,
-      usefulLinks: req.body.deadline,
+      usefulLinks: req.body.usefulLinks,
       members: [
         {
           memberId: userId,
@@ -79,7 +79,7 @@ exports.createProject = async (req, res) => {
 
 // Join project with given project id and userId
 exports.joinProject = async (req, res) => {
-  const userId = req.loggedInUser._id;
+  const userId = req.params.userId;
   const projectId = req.params.projectId;
 
   const errorsArray = getErrors(req);
@@ -107,11 +107,11 @@ exports.joinProject = async (req, res) => {
     // Check if user is already admin
     if (
       project.members.find(
-        (member) => member.memberId.toString() === user._id.toString()
+        (member) => member.memberId.toString() === userId.toString()
       )
     ) {
       return res.status(404).json({
-        error: "You've already joined the project.",
+        error: `${user.name} has already joined the project.`,
       });
     }
 
@@ -119,7 +119,7 @@ exports.joinProject = async (req, res) => {
     await user.updateOne({
       $push: {
         projects: {
-          projectId: project._id,
+          projectId: projectId,
           joinedAt: new Date().toISOString(),
         },
       },
@@ -129,14 +129,90 @@ exports.joinProject = async (req, res) => {
     await project.updateOne({
       $push: {
         members: {
-          memberId: user._id,
+          memberId: userId,
           joinedAt: new Date().toISOString(),
         },
       },
     });
 
     res.status(200).json({
-      msg: `You've successfully joined the ${project.name} project.`,
+      msg: `${user.name} successfully joined the ${project.name} project.`,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      error: e.message,
+    });
+  }
+};
+
+// Join project with given project id and userId
+exports.removeFromTheProject = async (req, res) => {
+  const userId = req.params.userId;
+  const projectId = req.params.projectId;
+
+  try {
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      return res.status(404).json({
+        error: "Project requested couldn't found.",
+      });
+    }
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        error: "User doesnt exist.",
+      });
+    }
+
+    // Check if user is member and admin
+    let isAMember = project.members.find(
+      (member) => member.memberId.toString() === userId.toString()
+    );
+
+    if (!isAMember) {
+      return res.status(404).json({
+        error: `${user.name} hasn't joined the project.`,
+      });
+    }
+
+    if (project.admin.toString() === userId.toString()) {
+      return res.status(404).json({
+        error: `${user.name} is admin of project. ${user.name} can't be removed.`,
+      });
+    }
+
+    //   Update the user
+    await user.updateOne({
+      $pull: {
+        projects: {
+          projectId,
+        },
+        adminProjects: {
+          projectId,
+        },
+        bannedProjects: {
+          projectId,
+        },
+      },
+    });
+
+    // Update the project
+    await project.updateOne({
+      $pull: {
+        members: {
+          memberId: userId,
+        },
+        bannedMembers: {
+          memberId: userId,
+        },
+      },
+    });
+
+    res.status(200).json({
+      msg: `${user.name} successfully removed the ${project.name} project.`,
     });
   } catch (e) {
     return res.status(500).json({
@@ -149,7 +225,10 @@ exports.joinProject = async (req, res) => {
 exports.getAProjectWithId = async (req, res) => {
   const projectId = req.params.projectId;
   try {
-    const project = await Project.findById(projectId);
+    const project = await Project.findById(projectId)
+      .populate("admin", "name profilePhoto")
+      .populate("members.memberId", "name profilePhoto")
+      .populate("bannedMembers.memberId", "name profilePhoto");
 
     if (!project) {
       return res.status(404).json({
@@ -184,13 +263,9 @@ exports.getAllProjectForAUser = async (req, res) => {
 
     const allprojectsforuser = await Project.find({
       "members.memberId": userId,
-    }).sort([["createdAt", sortBy]]);
-
-    if (allprojectsforuser.length === 0) {
-      return res.status(404).json({
-        error: "User is not member of any projects",
-      });
-    }
+    })
+      .sort([["createdAt", sortBy]])
+      .populate("admin members.memberId", "profilePhoto");
 
     res.status(200).json({
       projects: allprojectsforuser,
@@ -222,7 +297,6 @@ exports.updateProjectInfo = async (req, res) => {
     bannerPhoto: req.body.bannerPhoto,
     website: req.body.website,
     githubRepoLink: req.body.githubRepoLink,
-    institution: req.body.institution,
     deadline: req.body.deadline,
     usefulLinks: req.body.usefulLinks,
   });

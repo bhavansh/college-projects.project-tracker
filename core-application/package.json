@@ -29,6 +29,8 @@
     "express-validator": "^6.6.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.14",
+    "react-popper-tooltip": "^3.1.1",
+    "react-select": "^3.1.1",
     "uuid": "^8.3.1"
   }
 }

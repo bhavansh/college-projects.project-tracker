@@ -28,7 +28,9 @@ exports.getUserWithId = async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId)
+      .populate("projects.projectId", "+bannerPhoto +name")
+      .populate("adminProjects.projectId", "+bannerPhoto +name");
 
     //   Check if user exists
     if (!user) {
@@ -52,7 +54,11 @@ exports.getAllTheUsers = async (req, res) => {
   const sortBy = req.query.sortBy ? req.query.sortBy : "desc";
 
   try {
-    const users = await User.find({}).sort([["createdAt", sortBy]]);
+    const users = await User.find({})
+      .sort([["createdAt", sortBy]])
+      .select(
+        "-createdAt -updatedAt -__v -adminProjects -projects -bannedProjects"
+      );
     //   Check if users exists
     if (users.length === 0) {
       return res.status(404).json({
