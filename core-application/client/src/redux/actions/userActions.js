@@ -17,6 +17,7 @@ export const signin = (userData, history) => (dispatch) => {
       setAuthorizationToken(res.data.token);
       dispatch(getLoggedInUserData());
       dispatch(setAlert(res.data.msg, "success"));
+      history.push("/dashboard");
     })
     .catch((err) => {
       console.log(err.response.data);
@@ -31,6 +32,7 @@ export const signup = (userData, history) => (dispatch) => {
       setAuthorizationToken(res.data.token);
       dispatch(getLoggedInUserData());
       dispatch(setAlert(res.data.msg, "success"));
+      history.push("/dashboard");
     })
     .catch((err) => {
       console.log(err.response.data);
