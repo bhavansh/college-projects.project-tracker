@@ -254,12 +254,12 @@ const SingleProject = ({
               ))}
             </div>
             {project?.usefulLinks?.length !== 0 && (
-              <div className="useful-links my-5 px-5">
+              <div className="useful-links my-5 mt-7 px-5">
                 <h1 className="text-lg text-secondary-100 font-medium">
                   Useful Links
                 </h1>
                 {
-                  <div className="useful-links-card shadow-xl">
+                  <div className="useful-links-card">
                     {project?.usefulLinks?.map((link, index) => (
                       <div className="link  px-5" key={index}>
                         <a

@@ -13,7 +13,7 @@ const SignIn = ({ signin, setAlert, history }) => {
   const responseGoogle = (response) => {
     const { profileObj: googleInfo } = response;
     if (response.error) {
-      setAlert(response.error, "error");
+      console.log(response.error);
     } else if (isSignIn) {
       signin({ email: googleInfo.email }, history);
     } else {
