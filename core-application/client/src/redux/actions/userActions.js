@@ -1,7 +1,5 @@
 import axios from "axios";
 import {
-  SET_ERRORS,
-  SET_ALERT,
   SET_USER,
   SET_ALL_USERS,
   SET_UNAUTHENTICATED,

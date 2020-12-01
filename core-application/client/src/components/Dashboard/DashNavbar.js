@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { logout } from "./../../redux/actions/userActions";
 import { connect } from "react-redux";
@@ -210,7 +209,6 @@ const DashNavbar = ({ logout, user, selectedProject }) => {
   );
 };
 
-DashNavbar.propTypes = {};
 const mapStatesToProps = (state) => ({
   user: state.user,
   selectedProject: state.data.selectedProject,

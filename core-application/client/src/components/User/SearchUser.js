@@ -2,21 +2,10 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { getAllUsers } from "../../redux/actions/userActions";
 import Fuse from "fuse.js";
-import DashNavbar from "../Dashboard/DashNavbar";
 import { connect } from "react-redux";
 import { HashLoader } from "react-spinners";
-import Loader from "../helpers/Loader";
-import { Link } from "react-router-dom";
-import { joinOrRomoveUserfromProject } from "../../redux/actions/dataActions";
 
-const SearchUser = ({
-  users,
-  credentials,
-  getAllUsers,
-  history,
-  selectedProject,
-  joinOrRomoveUserfromProject,
-}) => {
+const SearchUser = ({ users, getAllUsers, history }) => {
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [results, setResults] = useState(null);
@@ -36,10 +25,6 @@ const SearchUser = ({
       setLoading(false);
     }
   }, [users?.length]);
-
-  // const handleAddORRemoveUserToProject = (e, userId) => {
-  //   joinOrRomoveUserfromProject(selectedProject._id, userId, history);
-  // };
 
   // Search Result template
   const ResultUser = ({ user }) => {
@@ -87,39 +72,6 @@ const SearchUser = ({
               </a>
             </div>
           </div>
-          {/* {selectedProject?.admin._id !==
-          credentials._id ? null : selectedProject &&
-            selectedProject?.members.find(
-              (member) => member.memberId._id !== user?._id
-            ) ? (
-            <div className="right">
-              <button
-                className="bg-secondary-200 text-white text-xs rounded p-2  hover:border-2 hover:border-gray-800 hover:bg-gray-300 hover:text-secondary-300 transition duration-200"
-                onClick={(e) => {
-                  handleAddORRemoveUserToProject(e, user._id);
-                }}
-              >
-                Add to{" "}
-                {selectedProject?.name.length > 15
-                  ? `${selectedProject?.name.substring(0, 15)}...`
-                  : selectedProject?.name}
-              </button>
-            </div>
-          ) : (
-            <div className="right">
-              <button
-                className="bg-gray-50 text-secondary-300 text-xs border-2 border-gray-900 rounded p-2 hover:bg-secondary-200 hover:text-white transition duration-200"
-                onClick={(e) => {
-                  handleAddORRemoveUserToProject(e, user._id);
-                }}
-              >
-                Remove from{" "}
-                {selectedProject?.name.length > 15
-                  ? `${selectedProject?.name.substring(0, 15)}...`
-                  : selectedProject?.name}
-              </button>
-            </div>
-          )} */}
         </div>
       </div>
     );
@@ -156,7 +108,7 @@ const SearchUser = ({
     const { value } = e.target;
     setLoading(true);
     setSearchValue(value);
-    setResults(fuse.search(searchValue));
+    setResults(fuse.search(value));
     setLoading(false);
   };
 
@@ -249,5 +201,4 @@ const mapStatesToProps = (state) => ({
 });
 export default connect(mapStatesToProps, {
   getAllUsers,
-  joinOrRomoveUserfromProject,
 })(SearchUser);

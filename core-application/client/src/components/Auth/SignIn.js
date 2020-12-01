@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { signin, signup } from "./../../redux/actions/userActions";
+import { signin } from "./../../redux/actions/userActions";
 import { GoogleLogin } from "react-google-login";
 import avatarImg from "../../images/signinAvatar.jpg";
 import googleImg from "../../images/google.svg";

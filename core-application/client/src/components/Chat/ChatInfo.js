@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import PropTypes from "prop-types";
 import { v4 as uuidV4 } from "uuid";
 import { storage, firestore } from "../../firebase/firebaseSetup";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -9,9 +8,8 @@ import { DotLoader, PropagateLoader } from "react-spinners";
 import mime from "mime-types";
 import { Picker, emojiIndex } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
-import { setAlert } from "./../../redux/actions/alertAction";
 
-const ChatInfo = ({ selectedProject, credentials, setAlert }) => {
+const ChatInfo = ({ selectedProject, credentials }) => {
   const storageRef = storage.ref();
   const projectRef = firestore.collection("projects");
   const query = projectRef
@@ -224,12 +222,10 @@ const ChatInfo = ({ selectedProject, credentials, setAlert }) => {
   );
 };
 
-ChatInfo.propTypes = {};
-
 const mapStatesToProps = (state) => ({
   selectedProject: state.data.selectedProject,
   members: state.data.members,
   credentials: state.user.credentials,
 });
 
-export default connect(mapStatesToProps, { setAlert })(ChatInfo);
+export default connect(mapStatesToProps, {})(ChatInfo);

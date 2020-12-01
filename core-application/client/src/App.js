@@ -27,7 +27,6 @@ import EditProject from "./components/Project/EditProject";
 import AddProject from "./components/Project/AddProject";
 import SingleProject from "./components/Project/SingleProject";
 import Projects from "./components/Project/Projects";
-import { setAlert } from "./redux/actions/alertAction";
 
 const token = localStorage.getItem("pt-token");
 if (token) {

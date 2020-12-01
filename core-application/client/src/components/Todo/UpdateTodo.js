@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { clearErrors } from "../../redux/actions/uiActions";
-import {
-  createTodo,
-  getATodo,
-  updateTodo,
-} from "./../../redux/actions/dataActions";
+import { getATodo, updateTodo } from "./../../redux/actions/dataActions";
 import Loader from "./../helpers/Loader";
 import { useState } from "react";
 import Calender from "./../helpers/Calender";
