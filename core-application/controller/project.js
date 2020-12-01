@@ -186,29 +186,25 @@ exports.removeFromTheProject = async (req, res) => {
 
     //   Update the user
     await user.updateOne({
-      $pull: {
-        projects: {
-          projectId,
-        },
-        adminProjects: {
-          projectId,
-        },
-        bannedProjects: {
-          projectId,
-        },
-      },
+      projects: user.projects.filter(
+        (proj) => proj.projectId.toString() !== projectId.toString()
+      ),
+      adminProjects: user.adminProjects.filter(
+        (proj) => proj.projectId.toString() !== projectId.toString()
+      ),
+      bannedProjects: user.bannedProjects.filter(
+        (proj) => proj.projectId.toString() !== projectId.toString()
+      ),
     });
 
     // Update the project
     await project.updateOne({
-      $pull: {
-        members: {
-          memberId: userId,
-        },
-        bannedMembers: {
-          memberId: userId,
-        },
-      },
+      members: project.members.filter(
+        (member) => member.memberId.toString() !== userId.toString()
+      ),
+      bannedMembers: project.bannedMembers.filter(
+        (member) => member.memberId.toString() !== userId.toString()
+      ),
     });
 
     res.status(200).json({

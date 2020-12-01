@@ -8,44 +8,47 @@ import { useState } from "react";
 import { HashLoader } from "react-spinners";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { joinOrRomoveUserfromProject } from "../../redux/actions/dataActions";
+import {
+  getAllProjectMembers,
+  joinOrRomoveUserfromProject,
+} from "../../redux/actions/dataActions";
 
 const Profile = ({
   match: {
     params: { userId },
   },
   joinOrRomoveUserfromProject,
+  getAllProjectMembers,
   getUserData,
   user,
   selectedProject,
+  members,
   credentials,
   history,
 }) => {
   const initialiseIsAddedToProject = () => {
-    const isAdded = selectedProject?.members.find(
-      (member) => member.memberId._id === userId
-    );
-    if (isAdded) return true;
+    const isAdded = members?.find((member) => member.memberId._id === userId);
+    if (isAdded !== undefined) return true;
     else return false;
   };
 
   const [userData, setUserData] = useState(credentials);
   const [loading, setLoading] = useState(false);
-  const [isAddedToProject, setIsAddedToProject] = useState(
-    initialiseIsAddedToProject()
-  );
+  const [isAddedToProject, setIsAddedToProject] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     getUserData(userId);
     setUserData(user);
+    getAllProjectMembers(selectedProject?._id);
+
     if (user !== null) {
+      setIsAddedToProject(initialiseIsAddedToProject());
       setLoading(false);
     }
   }, [user?._id, userId]);
 
   const handleJoinORRemoveProject = () => {
-    setIsAddedToProject((prev) => !prev);
     if (isAddedToProject) {
       joinOrRomoveUserfromProject(
         selectedProject._id,
@@ -56,6 +59,7 @@ const Profile = ({
     } else {
       joinOrRomoveUserfromProject(selectedProject._id, userId, "join", history);
     }
+    setIsAddedToProject((prev) => !prev);
   };
   return (
     <div>
@@ -293,9 +297,11 @@ Profile.propTypes = {
 const mapStatesToProps = (state) => ({
   credentials: state.user.credentials,
   selectedProject: state.data.selectedProject,
+  members: state.data.members,
   user: state.user.user,
 });
 export default connect(mapStatesToProps, {
   getUserData,
   joinOrRomoveUserfromProject,
+  getAllProjectMembers,
 })(Profile);

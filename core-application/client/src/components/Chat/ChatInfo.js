@@ -120,11 +120,6 @@ const ChatInfo = ({ selectedProject, credentials, setAlert }) => {
     });
   };
 
-  function convertEmoji(str) {
-    return str.replace(/\[e-([0-9a-fA-F]+)\]/g, (match, hex) =>
-      String.fromCodePoint(Number.parseInt(hex, 16))
-    );
-  }
   const handleSelectEmoji = (emoji) => {
     setchatValue((prev) => colonToUnicode(` ${prev} ${emoji.colons} `));
   };

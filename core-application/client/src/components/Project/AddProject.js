@@ -58,8 +58,7 @@ const AddProject = ({ ui, clearErrors, createProject, history }) => {
     createProject(
       {
         ...projectData,
-        usefulLinks:
-          tempUsefulLink[0].title.trim() === "" ? [] : tempUsefulLink,
+        usefulLinks: tempUsefulLink,
         bannerPhoto:
           projectData.bannerPhoto !== ""
             ? projectData.bannerPhoto

@@ -6,22 +6,43 @@ import moment from "moment";
 import {
   getAProject,
   getAllTodosOfProject,
+  getAllProjectMembers,
+  joinOrRomoveUserfromProject,
 } from "../../redux/actions/dataActions";
 
 const SingleProject = ({
   match: { params },
   getAProject,
   getAllTodosOfProject,
+  joinOrRomoveUserfromProject,
+  getAllProjectMembers,
   project,
+  members,
   credentials,
   history,
   todos,
 }) => {
   const [loading, setLoading] = useState(false);
+
+  const isUserMember = (userId) => {
+    const isAdded = members?.find((member) => member.memberId._id === userId);
+    if (isAdded !== undefined) return true;
+    else return false;
+  };
+
+  const handleJoinORRemoveProject = (userId) => {
+    if (isUserMember(userId)) {
+      joinOrRomoveUserfromProject(params.projectId, userId, "remove", history);
+    } else {
+      joinOrRomoveUserfromProject(params.projectId, userId, "join", history);
+    }
+  };
   useEffect(() => {
     setLoading(true);
     getAProject(params.projectId);
     getAllTodosOfProject(params.projectId);
+    getAllProjectMembers(params?.projectId);
+
     if (project && todos) {
       setLoading(false);
     }
@@ -243,13 +264,31 @@ const SingleProject = ({
                       {member?.memberId?.name}
                     </h1>
                   </div>
-                  {credentials?._id === project?.admin?._id &&
-                    member?.memberId?._id !== project?.admin?._id && (
-                      <button className="ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
-                        <i className="fas fa-user-slash mr-2"></i>
-                        <span>Ban</span>
-                      </button>
-                    )}
+                  <div className="actions">
+                    {credentials?._id === project?.admin?._id &&
+                      member?.memberId?._id !== project?.admin?._id && (
+                        <button
+                          onClick={(e) =>
+                            handleJoinORRemoveProject(member?.memberId?._id)
+                          }
+                          className="ml-2 bg-white border-2 border-primary-100 text-xs rounded-full py-2 px-4  transition duration-200 ease-out transform focus:outline-none hover:scale-95"
+                        >
+                          {isUserMember(member?.memberId?._id)
+                            ? "Remove from"
+                            : "Add to"}{" "}
+                          {project?.name.length > 15
+                            ? `${project?.name.substring(0, 15)}...`
+                            : project?.name}
+                        </button>
+                      )}
+                    {credentials?._id === project?.admin?._id &&
+                      member?.memberId?._id !== project?.admin?._id && (
+                        <button className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
+                          <i className="fas fa-user-slash mr-2"></i>
+                          <span>Ban</span>
+                        </button>
+                      )}
+                  </div>
                 </div>
               ))}
             </div>
@@ -261,19 +300,19 @@ const SingleProject = ({
                 {
                   <div className="useful-links-card">
                     {project?.usefulLinks?.map((link, index) => (
-                      <div className="link  px-5" key={index}>
+                      <div className="link py-2 px-5" key={index}>
                         <a
                           href={link?.link}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-gray-600"
+                          className="text-gray-600 text-sm"
                         >
                           <span>
                             <i className="far fa-dot-circle text-primary-300 mr-3"></i>
                           </span>
                           <span>{link?.title}</span>
                           <span>
-                            <i className="fas fa-external-link-alt ml-3"></i>
+                            <i className="fas fa-external-link-alt ml-3 text-xs"></i>
                           </span>
                         </a>
                       </div>
@@ -312,9 +351,13 @@ const SingleProject = ({
 const mapStatesToProps = (state) => ({
   credentials: state.user.credentials,
   project: state.data.project,
+  members: state.data.members,
   todos: state.data.todos,
 });
 
-export default connect(mapStatesToProps, { getAProject, getAllTodosOfProject })(
-  SingleProject
-);
+export default connect(mapStatesToProps, {
+  getAProject,
+  getAllTodosOfProject,
+  joinOrRomoveUserfromProject,
+  getAllProjectMembers,
+})(SingleProject);
