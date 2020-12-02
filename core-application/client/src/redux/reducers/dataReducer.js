@@ -6,6 +6,9 @@ import {
   SET_TODOS,
   SET_TODO,
   REMOVE_TODO,
+  SET_CHAT_TOXICITY,
+  SET_CHAT_TOXICITIES,
+  REMOVE_CHAT_TOXICITY,
 } from "../type";
 
 const initState = {
@@ -14,6 +17,8 @@ const initState = {
   members: null,
   todos: null,
   todo: null,
+  chatToxicities: null,
+  chatToxicity: null,
   selectedProject: null,
 };
 
@@ -53,6 +58,26 @@ export default function (state = initState, action) {
       return {
         ...state,
         members: action.payload,
+      };
+    case SET_PROJECT_MEMBERS:
+      return {
+        ...state,
+        members: action.payload,
+      };
+    case SET_CHAT_TOXICITY:
+      return {
+        ...state,
+        chatToxicity: action.payload,
+      };
+    case REMOVE_CHAT_TOXICITY:
+      return {
+        ...state,
+        chatToxicity: null,
+      };
+    case SET_CHAT_TOXICITIES:
+      return {
+        ...state,
+        chatToxicities: action.payload,
       };
     default:
       return state;

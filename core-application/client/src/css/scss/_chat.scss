@@ -350,3 +350,50 @@ $dark-green-color: rgb(76, 207, 118);
     }
   }
 }
+
+#chat-toxicity {
+  min-height: 90vh;
+
+  & .chat-container {
+    height: 75%;
+    & .chat-wrapper {
+      padding: 1rem 3rem;
+      & .chat {
+        min-height: 45px;
+        width: 100%;
+        background-color: #fff;
+        margin: 1rem 0;
+        padding: 1rem 2rem;
+
+        & .toxicities {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+
+          & .info-wrapper {
+            width: 40%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.2rem 0;
+
+            & i {
+              font-size: 0.4rem;
+            }
+          }
+        }
+
+        & .toxicity-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          & .right {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+}

@@ -27,3 +27,8 @@ export const SET_CURRENT_PROJECT = "SET_CURRENT_PROJECT";
 export const SET_TODOS = "SET_TODOS";
 export const SET_TODO = "SET_TODO";
 export const REMOVE_TODO = "REMOVE_TODO";
+
+// Chat Toxicity
+export const SET_CHAT_TOXICITY = "SET_CHAT_TOXICITY";
+export const REMOVE_CHAT_TOXICITY = "REMOVE_CHAT_TOXICITY";
+export const SET_CHAT_TOXICITIES = "SET_CHAT_TOXICITIES";

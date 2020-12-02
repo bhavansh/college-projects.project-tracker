@@ -27,6 +27,7 @@ import EditProject from "./components/Project/EditProject";
 import AddProject from "./components/Project/AddProject";
 import SingleProject from "./components/Project/SingleProject";
 import Projects from "./components/Project/Projects";
+import ToxicChat from "./components/Project/ToxicChat";
 
 const token = localStorage.getItem("pt-token");
 if (token) {
@@ -72,6 +73,11 @@ function App() {
               exact
               path="/project/:projectId"
               component={SingleProject}
+            />
+            <PrivateRoute
+              exact
+              path="/toxic-chats/:projectId/:userId"
+              component={ToxicChat}
             />
             <PrivateRoute
               exact

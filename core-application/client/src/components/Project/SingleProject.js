@@ -3,11 +3,14 @@ import { useState } from "react";
 import { connect } from "react-redux";
 import { HashLoader } from "react-spinners";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import {
   getAProject,
+  removeToxicity,
   getAllTodosOfProject,
   getAllProjectMembers,
   joinOrRomoveUserfromProject,
+  getAllMembersToxicity,
 } from "../../redux/actions/dataActions";
 
 const SingleProject = ({
@@ -15,12 +18,15 @@ const SingleProject = ({
   getAProject,
   getAllTodosOfProject,
   joinOrRomoveUserfromProject,
+  removeToxicity,
   getAllProjectMembers,
+  getAllMembersToxicity,
   project,
   members,
   credentials,
   history,
   todos,
+  chatToxicities,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -42,11 +48,18 @@ const SingleProject = ({
     getAProject(params.projectId);
     getAllTodosOfProject(params.projectId);
     getAllProjectMembers(params?.projectId);
-
-    if (project && todos) {
+    getAllMembersToxicity(params?.projectId);
+    removeToxicity();
+    if (project && todos && chatToxicities) {
       setLoading(false);
     }
-  }, [project?._id, todos?.allTodos?.length]);
+  }, [project?._id, todos?.allTodos?.length, chatToxicities?.count]);
+
+  const getToxicMessages = (userId) => {
+    return chatToxicities?.chatToxicities.filter(
+      (chat) => chat?.user?._id === userId
+    );
+  };
 
   return (
     <div id="project-info">
@@ -281,13 +294,24 @@ const SingleProject = ({
                             : project?.name}
                         </button>
                       )}
-                    {credentials?._id === project?.admin?._id &&
-                      member?.memberId?._id !== project?.admin?._id && (
-                        <button className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
-                          <i className="fas fa-user-slash mr-2"></i>
-                          <span>Ban</span>
-                        </button>
-                      )}
+                    {/* {credentials?._id === project?.admin?._id &&
+                      member?.memberId?._id !== project?.admin?._id && ( */}
+                    <>
+                      <Link
+                        to={`/toxic-chats/${project?._id}/${member?.memberId?._id}`}
+                        className="ml-3 ban-button py-2 px-4 bg-secondary-200 text-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95"
+                      >
+                        <i className="fas fa-exclamation-triangle mr-2"></i>
+                        <span>
+                          {getToxicMessages(member?.memberId?._id).length} Chats
+                        </span>
+                      </Link>
+                      <button className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
+                        <i className="fas fa-user-slash mr-2"></i>
+                        <span>Ban</span>
+                      </button>
+                    </>
+                    {/* )} */}
                   </div>
                 </div>
               ))}
@@ -351,6 +375,7 @@ const SingleProject = ({
 const mapStatesToProps = (state) => ({
   credentials: state.user.credentials,
   project: state.data.project,
+  chatToxicities: state.data.chatToxicities,
   members: state.data.members,
   todos: state.data.todos,
 });
@@ -360,4 +385,6 @@ export default connect(mapStatesToProps, {
   getAllTodosOfProject,
   joinOrRomoveUserfromProject,
   getAllProjectMembers,
+  getAllMembersToxicity,
+  removeToxicity,
 })(SingleProject);

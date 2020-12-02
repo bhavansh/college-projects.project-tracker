@@ -18,12 +18,14 @@ const auth = require("./routes/auth");
 const user = require("./routes/user");
 const project = require("./routes/project");
 const todo = require("./routes/todo");
+const chat_toxicity = require("./routes/chat_toxicity");
 
 // Routes
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/user", user);
 app.use("/api/v1/project", project);
 app.use("/api/v1/todo", todo);
+app.use("/api/v1/chat-toxicity", chat_toxicity);
 
 //Serve static assets in Production
 if (process.env.NODE_ENV === "production") {

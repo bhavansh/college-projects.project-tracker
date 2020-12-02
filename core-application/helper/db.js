@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(process.env.MONGO_ATLAS_URI, {
+  .connect(process.env.MONGO_URI_PROD, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -9,7 +9,7 @@ mongoose
   .catch((err) => console.log(err));
 
 // mongoose.connect(
-//   process.env.MONGO_ATLAS_URI,
+//   process.env.MONGO_URI_PROD,
 //   {
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true,

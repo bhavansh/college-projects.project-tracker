@@ -8,8 +8,11 @@ import { DotLoader, PropagateLoader } from "react-spinners";
 import mime from "mime-types";
 import { Picker, emojiIndex } from "emoji-mart";
 import "emoji-mart/css/emoji-mart.css";
+import { postAToxicity } from "../../redux/actions/dataActions";
+import * as tf from "@tensorflow/tfjs";
+import * as toxicity from "@tensorflow-models/toxicity";
 
-const ChatInfo = ({ selectedProject, credentials }) => {
+const ChatInfo = ({ selectedProject, credentials, postAToxicity }) => {
   const storageRef = storage.ref();
   const projectRef = firestore.collection("projects");
   const query = projectRef
@@ -24,6 +27,26 @@ const ChatInfo = ({ selectedProject, credentials }) => {
 
   const scrollRef = useRef();
 
+  const checkAndStoreToxicity = (text) => {
+    const threshold = 0.9;
+    toxicity.load(threshold).then((model) => {
+      model.classify([text]).then((predictions) => {
+        console.log(predictions);
+        const chatToxicityData = {
+          text: text,
+          probabilities: predictions.map((pred) => ({
+            label: pred.label,
+            results: pred.results[0],
+          })),
+        };
+        console.log(chatToxicityData);
+        postAToxicity(chatToxicityData, selectedProject._id);
+        // if (chatToxicityData.toxicity[0]["match"] === true) {
+        // }
+      });
+    });
+  };
+
   const storeToDB = async (
     text,
     fileName,
@@ -33,23 +56,30 @@ const ChatInfo = ({ selectedProject, credentials }) => {
     profanityIndex = 0,
     profanityRemark = null
   ) => {
-    handleToggleEmojiPicker();
+    if (setEmojiPicker === true) {
+      handleToggleEmojiPicker();
+    }
 
-    await projectRef.doc(selectedProject._id).collection("chats").add({
-      senderId: credentials?._id,
-      profilePhoto: credentials?.profilePhoto,
-      text: text,
-      fileName,
-      fileType,
-      isFile,
-      fileUrl,
-      profanityIndex,
-      profanityRemark,
-      createdAt: new Date().toISOString(),
-    });
+    // await projectRef.doc(selectedProject._id).collection("chats").add({
+    //   senderId: credentials?._id,
+    //   profilePhoto: credentials?.profilePhoto,
+    //   text: text,
+    //   fileName,
+    //   fileType,
+    //   isFile,
+    //   fileUrl,
+    //   profanityIndex,
+    //   profanityRemark,
+    //   createdAt: new Date().toISOString(),
+    // });
     setchatValue("");
     setuploading(false);
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
+
+    // Check for profanities
+    if (!isFile) {
+      checkAndStoreToxicity(text);
+    }
   };
 
   const sendMessage = async (e) => {
@@ -228,4 +258,4 @@ const mapStatesToProps = (state) => ({
   credentials: state.user.credentials,
 });
 
-export default connect(mapStatesToProps, {})(ChatInfo);
+export default connect(mapStatesToProps, { postAToxicity })(ChatInfo);

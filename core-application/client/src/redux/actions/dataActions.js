@@ -8,6 +8,9 @@ import {
   SET_TODO,
   REMOVE_TODO,
   SET_PROJECT,
+  SET_CHAT_TOXICITIES,
+  SET_CHAT_TOXICITY,
+  REMOVE_CHAT_TOXICITY,
 } from "./../type";
 import { setErrors } from "./uiActions";
 
@@ -217,6 +220,64 @@ export const deleteATodo = (todoId, history) => (dispatch) => {
     })
     .catch((err) => {
       console.log(err.response.data);
+      dispatch(setAlert(err.response.data.error, "error"));
+    });
+};
+
+// Chat Toxicity
+
+export const postAToxicity = (chatToxicityData, projectId) => (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  axios
+    .post(`/api/v1/chat-toxicity/${projectId}`, chatToxicityData, config)
+    .then((res) => {
+      dispatch(setAlert(res.data.msg, "error"));
+    })
+    .catch((err) => {
+      console.log(err.response.data.error);
+      dispatch(setAlert(err.response.data.error, "error"));
+    });
+};
+
+export const removeToxicity = () => (dispatch) => {
+  dispatch({
+    type: REMOVE_CHAT_TOXICITY,
+  });
+};
+
+export const getAllToxitiesOfAUserFromARoom = (userId, projectId) => (
+  dispatch
+) => {
+  axios
+    .get(`/api/v1/chat-toxicity/all/${projectId}/${userId}`)
+    .then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: SET_CHAT_TOXICITY,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err.response.data.error);
+      dispatch(setAlert(err.response.data.error, "error"));
+    });
+};
+
+export const getAllMembersToxicity = (projectId) => (dispatch) => {
+  axios
+    .get(`/api/v1/chat-toxicity/all/${projectId}`)
+    .then((res) => {
+      dispatch({
+        type: SET_CHAT_TOXICITIES,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err.response.data.error);
       dispatch(setAlert(err.response.data.error, "error"));
     });
 };
