@@ -288,10 +288,7 @@ const SingleProject = ({
                         >
                           {isUserMember(member?.memberId?._id)
                             ? "Remove from"
-                            : "Add to"}{" "}
-                          {project?.name.length > 15
-                            ? `${project?.name.substring(0, 15)}...`
-                            : project?.name}
+                            : "Add to"}
                         </button>
                       )}
                     <>
