@@ -287,8 +287,8 @@ const SingleProject = ({
                           className="ml-2 bg-white border-2 border-primary-100 text-xs rounded-full py-2 px-4  transition duration-200 ease-out transform focus:outline-none hover:scale-95"
                         >
                           {isUserMember(member?.memberId?._id)
-                            ? "Remove from"
-                            : "Add to"}
+                            ? "Remove"
+                            : "Add"}
                         </button>
                       )}
                     <>
