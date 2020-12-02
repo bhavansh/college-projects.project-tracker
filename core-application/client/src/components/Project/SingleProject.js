@@ -305,13 +305,13 @@ const SingleProject = ({
                           {getToxicMessages(member?.memberId?._id).length} Chats
                         </span>
                       </button>
-                      {/* {credentials?._id === project?.admin?._id &&
-                      member?.memberId?._id !== project?.admin?._id && ( */}
-                      <button className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
-                        <i className="fas fa-user-slash mr-2"></i>
-                        <span>Ban</span>
-                      </button>
-                      {/* )} */}
+                      {credentials?._id === project?.admin?._id &&
+                        member?.memberId?._id !== project?.admin?._id && (
+                          <button className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
+                            <i className="fas fa-user-slash mr-2"></i>
+                            <span>Ban</span>
+                          </button>
+                        )}
                     </>
                   </div>
                 </div>
