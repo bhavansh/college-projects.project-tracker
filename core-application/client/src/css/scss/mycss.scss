@@ -85,10 +85,11 @@ body {
 #project-wrapper {
   position: relative;
   min-height: 95vh;
+  overflow-x: hidden !important;
   & .add-projects {
-    position: absolute;
-    bottom: 0;
-    right: 2rem;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -102,7 +103,7 @@ body {
   & #projects {
     width: 100vw;
     min-height: 90vh;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
 
     & .my-table {
       width: 90% !important;

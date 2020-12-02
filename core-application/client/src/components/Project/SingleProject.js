@@ -11,6 +11,7 @@ import {
   getAllProjectMembers,
   joinOrRomoveUserfromProject,
   getAllMembersToxicity,
+  toggleBanUserfromProject,
 } from "../../redux/actions/dataActions";
 
 const SingleProject = ({
@@ -27,12 +28,21 @@ const SingleProject = ({
   history,
   todos,
   chatToxicities,
+  toggleBanUserfromProject,
 }) => {
   const [loading, setLoading] = useState(false);
 
   const isUserMember = (userId) => {
     const isAdded = members?.find((member) => member.memberId._id === userId);
     if (isAdded !== undefined) return true;
+    else return false;
+  };
+
+  const isBannedMember = (userId) => {
+    const isBanned = project?.bannedMembers?.find(
+      (member) => member?.memberId?._id === userId
+    );
+    if (isBanned !== undefined) return true;
     else return false;
   };
 
@@ -298,7 +308,7 @@ const SingleProject = ({
                             pathname: `/toxic-chats/${project?._id}/${member?.memberId?._id}`,
                           });
                         }}
-                        className="ml-3 ban-button py-2 px-4 bg-secondary-200 text-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95"
+                        className="ml-3 ban-button py-2 px-4 bg-secondary-200 focus:outline-none  text-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95"
                       >
                         <i className="fas fa-exclamation-triangle mr-2"></i>
                         <span>
@@ -307,9 +317,22 @@ const SingleProject = ({
                       </button>
                       {credentials?._id === project?.admin?._id &&
                         member?.memberId?._id !== project?.admin?._id && (
-                          <button className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
+                          <button
+                            className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md focus:outline-none text-xs transition duration-200 transform hover:scale-95"
+                            onClick={(e) =>
+                              toggleBanUserfromProject(
+                                project._id,
+                                member?.memberId?._id,
+                                history
+                              )
+                            }
+                          >
                             <i className="fas fa-user-slash mr-2"></i>
-                            <span>Ban</span>
+                            <span>
+                              {isBannedMember(member?.memberId?._id)
+                                ? "Unban"
+                                : "Ban"}
+                            </span>
                           </button>
                         )}
                     </>
@@ -388,4 +411,5 @@ export default connect(mapStatesToProps, {
   getAllProjectMembers,
   getAllMembersToxicity,
   removeToxicity,
+  toggleBanUserfromProject,
 })(SingleProject);

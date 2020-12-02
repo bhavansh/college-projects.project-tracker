@@ -79,6 +79,24 @@ export const joinOrRomoveUserfromProject = (
     });
 };
 
+export const toggleBanUserfromProject = (projectId, userId, history) => (
+  dispatch
+) => {
+  axios
+    .put(`/api/v1/project/ban/${projectId}/${userId}`)
+    .then((res) => {
+      dispatch(setAlert(res.data.msg, "success"));
+      history.go(0);
+    })
+    .catch((err) => {
+      if (err.response.data.error) {
+        dispatch(setAlert(err.response.data.error, "error"));
+      } else {
+        dispatch(setErrors(err.response.data));
+      }
+    });
+};
+
 export const getAProject = (projectId) => (dispatch) => {
   axios
     .get(`/api/v1/project/${projectId}`)

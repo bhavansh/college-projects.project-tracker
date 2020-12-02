@@ -11,8 +11,14 @@ import "emoji-mart/css/emoji-mart.css";
 import { postAToxicity } from "../../redux/actions/dataActions";
 import * as tf from "@tensorflow/tfjs";
 import * as toxicity from "@tensorflow-models/toxicity";
+import { setAlert } from "./../../redux/actions/alertAction";
 
-const ChatInfo = ({ selectedProject, credentials, postAToxicity }) => {
+const ChatInfo = ({
+  selectedProject,
+  credentials,
+  postAToxicity,
+  setAlert,
+}) => {
   const storageRef = storage.ref();
   const projectRef = firestore.collection("projects");
   const query = projectRef
@@ -39,10 +45,10 @@ const ChatInfo = ({ selectedProject, credentials, postAToxicity }) => {
             results: pred.results[0],
           })),
         };
-        console.log(chatToxicityData);
-        postAToxicity(chatToxicityData, selectedProject._id);
-        // if (chatToxicityData.toxicity[0]["match"] === true) {
-        // }
+        if (predictions[6].results[0].match === true) {
+          console.log("hi");
+          postAToxicity(chatToxicityData, selectedProject._id);
+        }
       });
     });
   };
@@ -60,18 +66,29 @@ const ChatInfo = ({ selectedProject, credentials, postAToxicity }) => {
       handleToggleEmojiPicker();
     }
 
-    // await projectRef.doc(selectedProject._id).collection("chats").add({
-    //   senderId: credentials?._id,
-    //   profilePhoto: credentials?.profilePhoto,
-    //   text: text,
-    //   fileName,
-    //   fileType,
-    //   isFile,
-    //   fileUrl,
-    //   profanityIndex,
-    //   profanityRemark,
-    //   createdAt: new Date().toISOString(),
-    // });
+    if (isBannedMember(credentials?._id)) {
+      setAlert(
+        "You were banned from project due to violating chat policies. Contact admin of project.",
+        "error"
+      );
+
+      setchatValue("");
+      setuploading(false);
+      return;
+    }
+
+    await projectRef.doc(selectedProject._id).collection("chats").add({
+      senderId: credentials?._id,
+      profilePhoto: credentials?.profilePhoto,
+      text: text,
+      fileName,
+      fileType,
+      isFile,
+      fileUrl,
+      profanityIndex,
+      profanityRemark,
+      createdAt: new Date().toISOString(),
+    });
     setchatValue("");
     setuploading(false);
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -152,6 +169,14 @@ const ChatInfo = ({ selectedProject, credentials, postAToxicity }) => {
     setchatValue((prev) => colonToUnicode(` ${prev} ${emoji.colons} `));
   };
 
+  const isBannedMember = (userId) => {
+    const isBanned = selectedProject?.bannedMembers?.find(
+      (member) => member?.memberId === userId
+    );
+    if (isBanned !== undefined) return true;
+    else return false;
+  };
+
   return loading ? (
     <div className="chat-section flex justify-center items-center w-screen mx-auto ">
       <PropagateLoader size={10} color={"#ff6f3c"} />
@@ -227,6 +252,7 @@ const ChatInfo = ({ selectedProject, credentials, postAToxicity }) => {
             placeholder="Say something nice..."
             className="rounded-lg outline-none py-2 px-3 border-2 border-gray-200"
           />
+
           <button
             type="submit"
             onClick={sendMessage}
@@ -235,6 +261,7 @@ const ChatInfo = ({ selectedProject, credentials, postAToxicity }) => {
           >
             Send <i className="far fa-paper-plane ml-1 text-sm"></i>
           </button>
+
           <div
             className="take-to-bottom-btn"
             onClick={(e) => {
@@ -258,4 +285,4 @@ const mapStatesToProps = (state) => ({
   credentials: state.user.credentials,
 });
 
-export default connect(mapStatesToProps, { postAToxicity })(ChatInfo);
+export default connect(mapStatesToProps, { postAToxicity, setAlert })(ChatInfo);

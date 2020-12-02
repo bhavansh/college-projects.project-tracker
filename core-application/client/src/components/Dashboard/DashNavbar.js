@@ -87,18 +87,22 @@ const DashNavbar = ({ logout, user, selectedProject }) => {
                   >
                     Projects
                   </Link>
-                  <Link
-                    to="/chat"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-                  >
-                    Chat
-                  </Link>
-                  <Link
-                    to="/todos"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-                  >
-                    Todos
-                  </Link>
+                  {selectedProject && (
+                    <>
+                      <Link
+                        to="/chat"
+                        className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
+                      >
+                        Chat
+                      </Link>
+                      <Link
+                        to="/todos"
+                        className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
+                      >
+                        Todos
+                      </Link>
+                    </>
+                  )}
                   <Link
                     to="/search"
                     className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
@@ -181,20 +185,25 @@ const DashNavbar = ({ logout, user, selectedProject }) => {
             >
               Projects
             </Link>
-            <Link
-              onClick={handleMenuClicked}
-              to="/chat"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-            >
-              Chat
-            </Link>
-            <Link
-              onClick={handleMenuClicked}
-              to="/todos"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-            >
-              Chat
-            </Link>
+            {selectedProject && (
+              <>
+                <Link
+                  onClick={handleMenuClicked}
+                  to="/chat"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
+                >
+                  Chat
+                </Link>
+                <Link
+                  onClick={handleMenuClicked}
+                  to="/todos"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
+                >
+                  Todos
+                </Link>
+              </>
+            )}
+
             <Link
               onClick={handleMenuClicked}
               to="/search"
