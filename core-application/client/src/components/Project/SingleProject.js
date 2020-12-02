@@ -292,15 +292,19 @@ const SingleProject = ({
                         </button>
                       )}
                     <>
-                      <Link
-                        to={`/toxic-chats/${project?._id}/${member?.memberId?._id}`}
+                      <button
+                        onClick={(e) => {
+                          history.push({
+                            pathname: `/toxic-chats/${project?._id}/${member?.memberId?._id}`,
+                          });
+                        }}
                         className="ml-3 ban-button py-2 px-4 bg-secondary-200 text-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95"
                       >
                         <i className="fas fa-exclamation-triangle mr-2"></i>
                         <span>
                           {getToxicMessages(member?.memberId?._id).length} Chats
                         </span>
-                      </Link>
+                      </button>
                       {/* {credentials?._id === project?.admin?._id &&
                       member?.memberId?._id !== project?.admin?._id && ( */}
                       <button className="ml-3 ban-button py-2 px-4 bg-primary-100 rounded-full shadow-md text-xs transition duration-200 transform hover:scale-95">
