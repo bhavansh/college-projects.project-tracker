@@ -11,6 +11,7 @@ const ToxicChat = ({
   match: { params },
   getAllToxitiesOfAUserFromARoom,
   chatToxicity,
+  history,
 }) => {
   const [loading, setLoading] = useState(false);
 
