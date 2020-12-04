@@ -61,7 +61,7 @@ function App() {
       <div className="content font-body text-right w-4/6">
         <img src={logo} alt="" className="h-20 w-20 mx-auto my-5" />
         <h1 className="text-xl text-primary-100">
-          Project Tracker doesn't works on mobile devices.
+          Project Tracker doesn't work on mobile devices.
         </h1>
         <h5 className="my-3 text-xs italic text-white text-right">
           ~ Team Pt.
