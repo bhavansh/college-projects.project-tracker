@@ -28,6 +28,7 @@ import AddProject from "./components/Project/AddProject";
 import SingleProject from "./components/Project/SingleProject";
 import Projects from "./components/Project/Projects";
 import ToxicChat from "./components/Project/ToxicChat";
+import logo from "./images/Logo 5.png";
 
 const token = localStorage.getItem("pt-token");
 if (token) {
@@ -55,7 +56,19 @@ if (selectedProject) {
 }
 
 function App() {
-  return (
+  return window.innerWidth < 900 ? (
+    <div className="mobile h-screen w-screen flex items-center justify-center  bg-black">
+      <div className="content font-body text-right w-4/6">
+        <img src={logo} alt="" className="h-20 w-20 mx-auto my-5" />
+        <h1 className="text-xl text-primary-100">
+          Project Tracker doesn't works on mobile devices.
+        </h1>
+        <h5 className="my-3 text-xs italic text-white text-right">
+          ~ Team Pt.
+        </h5>
+      </div>
+    </div>
+  ) : (
     <Provider store={store}>
       <div className="App font-body">
         <Router>

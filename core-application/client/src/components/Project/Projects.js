@@ -145,7 +145,7 @@ const Projects = ({
   };
   return (
     <div id="project-wrapper">
-      <DashNavbar />
+      <DashNavbar history={history} />
       <Link
         to="/add-project"
         className="add-projects bg-green-500 py-2 px-3 rounded-full "

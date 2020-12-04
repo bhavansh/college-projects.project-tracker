@@ -35,7 +35,7 @@ const Todos = ({
 
   return (
     <div id="todo-feature">
-      <DashNavbar />
+      <DashNavbar history={history} />
       {!selectedProject ? (
         <div
           className="flex justify-center items-center w-screen mx-auto "

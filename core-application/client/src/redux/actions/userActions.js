@@ -15,7 +15,7 @@ export const signin = (userData, history) => (dispatch) => {
       setAuthorizationToken(res.data.token);
       dispatch(getLoggedInUserData());
       dispatch(setAlert(res.data.msg, "success"));
-      history.push("/dashboard");
+      history.push("/projects");
     })
     .catch((err) => {
       console.log(err.response.data);
@@ -30,7 +30,7 @@ export const signup = (userData, history) => (dispatch) => {
       setAuthorizationToken(res.data.token);
       dispatch(getLoggedInUserData());
       dispatch(setAlert(res.data.msg, "success"));
-      history.push("/dashboard");
+      history.push("/projects");
     })
     .catch((err) => {
       console.log(err.response.data);
@@ -102,7 +102,8 @@ export const setAuthorizationToken = (recievedToken) => {
   axios.defaults.headers.common["Authorization"] = token;
 };
 
-export const logout = () => (dispatch) => {
+export const logout = (history) => (dispatch) => {
+  history.push("/");
   localStorage.removeItem("pt-token");
   localStorage.removeItem("selectedProject");
   delete axios.defaults.headers.common["Authorization"];

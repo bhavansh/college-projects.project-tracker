@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { logout } from "./../../redux/actions/userActions";
 import { connect } from "react-redux";
 
-const DashNavbar = ({ logout, user, selectedProject }) => {
+const DashNavbar = ({ history, logout, user, selectedProject }) => {
   const [isAvatarClicked, setIsAvatarClicked] = useState(false);
   const [isMenuClicked, setIsMenuClicked] = useState(false);
 
@@ -14,7 +14,9 @@ const DashNavbar = ({ logout, user, selectedProject }) => {
     setIsAvatarClicked((prev) => !prev);
   };
 
-  const handleSignOut = (e) => logout();
+  const handleSignOut = (e) => {
+    logout(history);
+  };
 
   return (
     <div>
@@ -64,23 +66,18 @@ const DashNavbar = ({ logout, user, selectedProject }) => {
             </div>
             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
               <div className="flex-shrink-0 flex items-center">
-                <Link to="/" className="text-xl text-white font-bold">
-                  {/* <img
-                    className="block h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                    alt="Workflow"
-                  /> */}
-                  Pt
+                <Link to="/" className="text-xl text-primary-100 font-bold">
+                  Pt.
                 </Link>
               </div>
               <div className="hidden sm:block sm:ml-6">
                 <div className="flex space-x-4">
-                  <Link
+                  {/* <Link
                     to="/dashboard"
                     className="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900"
                   >
                     Dashboard
-                  </Link>
+                  </Link> */}
                   <Link
                     to="/projects"
                     className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700"
@@ -171,13 +168,13 @@ const DashNavbar = ({ logout, user, selectedProject }) => {
 
         <div className={`${isMenuClicked ? "block" : "hidden"}`}>
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link
+            {/* <Link
               onClick={handleMenuClicked}
               to="/dashboard"
               className="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900"
             >
               Dashboard
-            </Link>
+            </Link> */}
             <Link
               onClick={handleMenuClicked}
               to="#"

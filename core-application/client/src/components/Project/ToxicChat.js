@@ -41,7 +41,7 @@ const ToxicChat = ({
         </div>
       ) : (
         <>
-          <DashNavbar />
+          <DashNavbar history={history} />
           <div id="chat-toxicity" className="bg-bg-100">
             <div className="container-section">
               <div className="header flex justify-between items-center">

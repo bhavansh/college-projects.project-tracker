@@ -8,8 +8,9 @@ import midImg from "../../images/mid.png";
 import foregroundImg from "../../images/foreground.png";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { connect } from "react-redux";
 
-const Landing = () => {
+const Landing = ({ authenticated }) => {
   let sectionRef = useRef();
 
   let tl = gsap.timeline({ defaults: { ease: "power1.out" } });
@@ -39,14 +40,22 @@ const Landing = () => {
       <div id="slider"></div>
       <div id="landing">
         <nav>
-          <div className="my-logo">
+          <div className="my-logo text-primary-100">
             <a href="/">Pt.</a>
           </div>
-          <div className="my-nav-links">
-            <ul>
-              <a href="/signin">Sign In</a>
-            </ul>
-          </div>
+          {authenticated ? (
+            <div className="my-nav-links">
+              <ul>
+                <a href="/projects">Projects</a>
+              </ul>
+            </div>
+          ) : (
+            <div className="my-nav-links">
+              <ul>
+                <a href="/signin">Sign In</a>
+              </ul>
+            </div>
+          )}
         </nav>
         <section id="sectionone" className="screen">
           <div id="scene" ref={(ele) => (sectionRef = ele)}>
@@ -75,4 +84,8 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+const mapStatesToProps = (state) => ({
+  authenticated: state.user.authenticated,
+});
+
+export default connect(mapStatesToProps, {})(Landing);

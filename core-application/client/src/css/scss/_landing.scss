@@ -69,7 +69,7 @@ $primary-color: #ffc93c;
       transition: all 200ms ease-out;
       &:hover {
         transform: scale(0.97);
-        color: $primary-color;
+        color: #fff;
       }
     }
 
@@ -128,8 +128,8 @@ $primary-color: #ffc93c;
 
     & .earth {
       position: absolute !important;
-      top: 26vh !important;
-      left: 30vw !important;
+      top: 24vh !important;
+      left: 33vw !important;
       & img {
         width: 400px;
         height: 400px;

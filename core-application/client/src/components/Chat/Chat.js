@@ -7,7 +7,7 @@ import UserInfo from "./UserInfo";
 import ProjectInfo from "./ProjectInfo";
 import ChatInfo from "./ChatInfo";
 
-const Chat = ({ selectedProject, members }) => {
+const Chat = ({ selectedProject, members, history }) => {
   const [userSelected, setUserSelected] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ const Chat = ({ selectedProject, members }) => {
 
   return (
     <div id="chat" className="">
-      <DashNavbar />
+      <DashNavbar history={history} />
       {!selectedProject ? (
         <div
           className="flex justify-center items-center w-screen mx-auto "

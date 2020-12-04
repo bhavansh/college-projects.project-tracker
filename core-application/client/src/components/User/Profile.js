@@ -63,7 +63,7 @@ const Profile = ({
   };
   return (
     <div>
-      <DashNavbar />
+      <DashNavbar history={history} />
       {loading ? (
         <div
           className="flex justify-center items-center w-screen mx-auto "
@@ -157,7 +157,11 @@ const Profile = ({
                       <i className="fab fa-github mr-2 text-primary-100"></i>
                       <h2>Github</h2>
                     </div>
-                    <a href={userData?.githubLink} target="_blank">
+                    <a
+                      href={userData?.githubLink}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <h3 className="text-xs text-gray-600 underline">
                         {
                           userData?.githubLink.split("/")[
