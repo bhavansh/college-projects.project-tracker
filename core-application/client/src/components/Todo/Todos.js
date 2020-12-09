@@ -8,7 +8,6 @@ import {
 } from "./../../redux/actions/dataActions";
 import { HashLoader } from "react-spinners";
 import TodoHeader from "./TodoHeader";
-import "react-popper-tooltip/dist/styles.css";
 import TodoContainer from "./TodoContainer";
 
 const Todos = ({
