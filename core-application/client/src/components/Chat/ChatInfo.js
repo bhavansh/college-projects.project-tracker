@@ -80,18 +80,18 @@ const ChatInfo = ({
       return;
     }
 
-    // await projectRef.doc(selectedProject._id).collection("chats").add({
-    //   senderId: credentials?._id,
-    //   profilePhoto: credentials?.profilePhoto,
-    //   text: text,
-    //   fileName,
-    //   fileType,
-    //   isFile,
-    //   fileUrl,
-    //   profanityIndex,
-    //   profanityRemark,
-    //   createdAt: new Date().toISOString(),
-    // });
+    await projectRef.doc(selectedProject._id).collection("chats").add({
+      senderId: credentials?._id,
+      profilePhoto: credentials?.profilePhoto,
+      text: text,
+      fileName,
+      fileType,
+      isFile,
+      fileUrl,
+      profanityIndex,
+      profanityRemark,
+      createdAt: new Date().toISOString(),
+    });
     setchatValue("");
     setuploading(false);
     scrollRef.current.scrollIntoView({ behavior: "smooth" });

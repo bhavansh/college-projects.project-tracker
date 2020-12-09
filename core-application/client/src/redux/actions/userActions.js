@@ -103,6 +103,7 @@ export const setAuthorizationToken = (recievedToken) => {
 };
 
 export const logout = (history) => (dispatch) => {
+  // Push after logout
   history.push("/");
   localStorage.removeItem("pt-token");
   localStorage.removeItem("selectedProject");
