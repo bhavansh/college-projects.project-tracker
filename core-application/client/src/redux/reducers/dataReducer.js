@@ -59,11 +59,6 @@ export default function (state = initState, action) {
         ...state,
         members: action.payload,
       };
-    case SET_PROJECT_MEMBERS:
-      return {
-        ...state,
-        members: action.payload,
-      };
     case SET_CHAT_TOXICITY:
       return {
         ...state,

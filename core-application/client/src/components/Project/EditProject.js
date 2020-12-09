@@ -75,7 +75,7 @@ const EditProject = ({
         bannerPhoto:
           projectData.bannerPhoto !== ""
             ? projectData.bannerPhoto
-            : "https://www.ntaskmanager.com/wp-content/uploads/2019/07/3.png",
+            : "https://raw.githubusercontent.com/saurabh-619/images/63d1e205dfb8898c2cd32ceef2d035b535872561/project%20tracker/Logo%208.svg",
       },
       projectId,
       history

@@ -62,7 +62,7 @@ const AddProject = ({ ui, clearErrors, createProject, history }) => {
         bannerPhoto:
           projectData.bannerPhoto !== ""
             ? projectData.bannerPhoto
-            : "https://images.unsplash.com/photo-1572177812156-58036aae439c?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1050&q=80",
+            : "https://raw.githubusercontent.com/saurabh-619/images/63d1e205dfb8898c2cd32ceef2d035b535872561/project%20tracker/Logo%208.svg",
       },
       history
     );
