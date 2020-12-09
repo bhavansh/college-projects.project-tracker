@@ -37,7 +37,7 @@ const ChatInfo = ({
     const threshold = 0.9;
     toxicity.load(threshold).then((model) => {
       model.classify([text]).then((predictions) => {
-        console.log(predictions);
+        // console.log(predictions);
         const chatToxicityData = {
           text: text,
           probabilities: predictions.map((pred) => ({
@@ -45,8 +45,11 @@ const ChatInfo = ({
             results: pred.results[0],
           })),
         };
-        if (predictions[6].results[0].match === true) {
-          console.log("hi");
+        const matchesArray = predictions.filter(
+          (pred) => pred.results[0].probabilities[1] > 0.7
+        );
+        // console.log(matchesArray.length);
+        if (matchesArray.length > 0) {
           postAToxicity(chatToxicityData, selectedProject._id);
         }
       });
@@ -77,18 +80,18 @@ const ChatInfo = ({
       return;
     }
 
-    await projectRef.doc(selectedProject._id).collection("chats").add({
-      senderId: credentials?._id,
-      profilePhoto: credentials?.profilePhoto,
-      text: text,
-      fileName,
-      fileType,
-      isFile,
-      fileUrl,
-      profanityIndex,
-      profanityRemark,
-      createdAt: new Date().toISOString(),
-    });
+    // await projectRef.doc(selectedProject._id).collection("chats").add({
+    //   senderId: credentials?._id,
+    //   profilePhoto: credentials?.profilePhoto,
+    //   text: text,
+    //   fileName,
+    //   fileType,
+    //   isFile,
+    //   fileUrl,
+    //   profanityIndex,
+    //   profanityRemark,
+    //   createdAt: new Date().toISOString(),
+    // });
     setchatValue("");
     setuploading(false);
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
