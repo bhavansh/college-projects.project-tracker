@@ -140,7 +140,7 @@ const SingleProject = ({
                 )}
                 {project?.githubRepoLink && (
                   <div className="info-wrapper text-gray-400">
-                    <i className="fas  fa-globe-americas text-green-500"></i>
+                    <i className="fab fa-github text-black"></i>
                     <a
                       href={project?.githubRepoLink}
                       target="_blank"
